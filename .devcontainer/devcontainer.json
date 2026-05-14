@@ -1,0 +1,29 @@
+{
+  "name": "vibe-cs",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+
+  // Default machine size for Codespaces created from this repo.
+  // 4-core / 8 GB / 32 GB disk is enough to load Qwen/Qwen3-0.6B on CPU.
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  // Install Torch (CPU build, ~200 MB) and transformers once the container is
+  // created. The Qwen/Qwen3-0.6B weights (~1.2 GB) are NOT pre-downloaded —
+  // they are fetched on the first call to generate().
+  "postCreateCommand": "pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir transformers",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  }
+}
