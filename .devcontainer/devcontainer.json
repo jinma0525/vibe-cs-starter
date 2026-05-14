@@ -10,10 +10,11 @@
     "storage": "32gb"
   },
 
-  // Install Torch (CPU build, ~200 MB) and transformers once the container is
-  // created. The Qwen/Qwen3-0.6B weights (~1.2 GB) are NOT pre-downloaded —
-  // they are fetched on the first call to generate().
-  "postCreateCommand": "pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir transformers",
+  // Install Torch (CPU build, ~200 MB) + transformers, then pre-download the
+  // Qwen/Qwen3-0.6B weights (~1.2 GB) into the HuggingFace cache so the
+  // candidate's first call to generate() is instant. Adds ~1–2 min to the
+  // initial Codespace build.
+  "postCreateCommand": "pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir transformers && python -c \"from transformers import AutoModelForCausalLM, AutoTokenizer; AutoTokenizer.from_pretrained('Qwen/Qwen3-0.6B'); AutoModelForCausalLM.from_pretrained('Qwen/Qwen3-0.6B')\"",
 
   "customizations": {
     "vscode": {
